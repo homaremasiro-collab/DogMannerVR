@@ -423,7 +423,9 @@ GameObject:
   - component: {fileID: 451756132}
   - component: {fileID: 451756131}
   - component: {fileID: 451756130}
-  m_Layer: 0
+  - component: {fileID: 451756136}
+  - component: {fileID: 451756135}
+  m_Layer: 3
   m_Name: Right Controller
   m_TagString: Hand
   m_Icon: {fileID: 0}
@@ -1081,6 +1083,54 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: 0}
   m_ButtonPressPoint: 0.5
+--- !u!54 &451756135
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451756128}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!135 &451756136
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451756128}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.05
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &486054491
 GameObject:
   m_ObjectHideFlags: 0
@@ -1208,13 +1258,13 @@ GameObject:
   - component: {fileID: 636395547}
   - component: {fileID: 636395550}
   - component: {fileID: 636395551}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DogInteractiontouch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!136 &636395547
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1234,7 +1284,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.75
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -1255,7 +1305,7 @@ Transform:
   m_GameObject: {fileID: 636395545}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: 0.41, y: 0.18, z: -0.5}
+  m_LocalPosition: {x: 0.004, y: 0.18, z: -0.5}
   m_LocalScale: {x: 1.0322775, y: 0.8224303, z: 0.95607}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1302,7 +1352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerType: 0
   manager: {fileID: 7633883515719581501}
-  zoneName: 
+  debugLog: 1
 --- !u!1 &663295158
 GameObject:
   m_ObjectHideFlags: 0
@@ -1337,6 +1387,37 @@ Transform:
   - {fileID: 451756129}
   m_Father: {fileID: 417881943}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &669803678
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 669803679}
+  m_Layer: 0
+  m_Name: StageFlow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &669803679
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669803678}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.004000008, y: 0.18398714, z: 0.055454016}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &703849659
 GameObject:
   m_ObjectHideFlags: 0
@@ -1353,7 +1434,7 @@ GameObject:
   - component: {fileID: 703849661}
   - component: {fileID: 703849667}
   - component: {fileID: 703849666}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Left Controller
   m_TagString: Hand
   m_Icon: {fileID: 0}
@@ -2026,7 +2107,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -2071,13 +2152,13 @@ GameObject:
   - component: {fileID: 769337784}
   - component: {fileID: 769337785}
   - component: {fileID: 769337786}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HeadTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &769337783
 Transform:
   m_ObjectHideFlags: 0
@@ -2087,7 +2168,7 @@ Transform:
   m_GameObject: {fileID: 769337782}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: -0.019, y: 0.925, z: 0.506}
+  m_LocalPosition: {x: -0.019, y: 0.99, z: 0.41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2112,7 +2193,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.33
+  m_Radius: 0.48
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &769337785
 Rigidbody:
@@ -2155,7 +2236,69 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerType: 1
   manager: {fileID: 7633883515719581501}
-  zoneName: 
+  debugLog: 1
+--- !u!1 &1257828098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1257828101}
+  - component: {fileID: 1257828100}
+  - component: {fileID: 1257828099}
+  m_Layer: 6
+  m_Name: DogMover
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1257828099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257828098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aeb1175ccb9249498395a4820f8d0ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 7633883515719581500}
+  walkStateName: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2|walk_front"
+  moveSpeed: 0.8
+--- !u!114 &1257828100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257828098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0161ab9f4f89de44908b0cb14a47c40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 1933249583}
+--- !u!4 &1257828101
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257828098}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7633883515719581499}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1272466649
 GameObject:
   m_ObjectHideFlags: 0
@@ -2168,7 +2311,7 @@ GameObject:
   - component: {fileID: 1272466652}
   - component: {fileID: 1272466651}
   - component: {fileID: 1272466653}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SniffZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2184,8 +2327,8 @@ Transform:
   m_GameObject: {fileID: 1272466649}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: 0.018, y: 0.755, z: 1.008}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.01, y: 0.509, z: 0.767}
+  m_LocalScale: {x: 1, y: 7.46, z: 0.69}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7633883515719581499}
@@ -2204,7 +2347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerType: 2
   manager: {fileID: 7633883515719581501}
-  zoneName: 
+  debugLog: 1
 --- !u!135 &1272466652
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2224,7 +2367,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.51
+  m_Radius: 0.03
   m_Center: {x: 0, y: 0, z: -0.25}
 --- !u!54 &1272466653
 Rigidbody:
@@ -2352,7 +2495,7 @@ Transform:
   m_GameObject: {fileID: 1517540847}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: -0.49, z: 1}
+  m_LocalPosition: {x: 1, y: -1, z: 1}
   m_LocalScale: {x: 14.486, y: 0.23282, z: 28.924213}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2387,7 +2530,7 @@ Transform:
   m_GameObject: {fileID: 1933249582}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.74, z: 0}
+  m_LocalPosition: {x: 0, y: 1.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2748,7 +2891,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5790164869758253872}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tail2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2812,7 +2955,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7405458277397494678}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: unkwon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2844,7 +2987,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8895037804914655813}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: head.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2891,7 +3034,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3322290049085555017}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tail3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2972,7 +3115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3700886267555593423}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: lowerArm.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3034,7 +3177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2533753504340444043}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: upperArm.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3050,7 +3193,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4229036233818674500}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3066,7 +3209,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2137699550393556741}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bagpaw_back.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3082,7 +3225,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1615200216534649218}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3114,7 +3257,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6875570085186914379}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bagpaw_back.R.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3161,7 +3304,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4422900386722333907}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3177,7 +3320,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2795619623471214091}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: head.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3193,7 +3336,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 214676721624490978}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: paw_front.L.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3225,7 +3368,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1431687825991385554}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: head.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3257,7 +3400,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3364187686214458253}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bagpaw_back.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3306,7 +3449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6405669503369053233}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: baglowerLeg.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3322,7 +3465,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7078962949897111971}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: koshi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3340,7 +3483,7 @@ GameObject:
   - component: {fileID: 7592949581511574419}
   - component: {fileID: 6046629735742643422}
   - component: {fileID: 7592949581511574420}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh1.0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3356,7 +3499,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1238388712435042853}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tail1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3491,7 +3634,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1338513919471005662}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: paw_front.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3539,7 +3682,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6918796739325164134}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: baglowerLeg.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3555,7 +3698,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8334997562427833676}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bagpaw_back.L.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3571,7 +3714,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6179771231862847218}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: front spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3587,7 +3730,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2618398074785666174}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: head.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3603,7 +3746,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 328701278327549897}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: paw_front.R.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3634,7 +3777,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2412331994704168007}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: upperArm.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3650,7 +3793,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2103213141535058176}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bagupperLeg.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3702,7 +3845,7 @@ GameObject:
   - component: {fileID: 7633883515719581499}
   - component: {fileID: 7633883515719581500}
   - component: {fileID: 7633883515719581501}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: iiiiiiinu2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3718,7 +3861,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 598719099373370935}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: lowerArm.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3750,7 +3893,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2083277889883666032}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u30DC\u30FC\u30F3"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3766,7 +3909,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3255625710180864424}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bagupperLeg.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3818,7 +3961,7 @@ Transform:
   m_GameObject: {fileID: 7114227466257606017}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0.53, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3827,7 +3970,7 @@ Transform:
   - {fileID: 636395549}
   - {fileID: 769337783}
   - {fileID: 1272466650}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1257828101}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!95 &7633883515719581500
 Animator:
@@ -3862,9 +4005,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99957ea4b5a743d4a958e8e4a8487756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dogAnimator: {fileID: 7633883515719581500}
   hmd: {fileID: 1933249583}
+  trigBody: TouchBody
+  trigHead: TouchHead
+  trigSniffOk: SniffOK
   crouchHeight: 1.2
   sniffHoldSeconds: 1
+  debugLog: 1
 --- !u!1 &8153722054358082277
 GameObject:
   m_ObjectHideFlags: 0
@@ -3874,7 +4022,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6484135895109191732}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: paw_front.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3890,7 +4038,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 519578931745348242}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: backspine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3921,7 +4069,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4783695363146464036}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3954,4 +4102,5 @@ SceneRoots:
   - {fileID: 2088368800}
   - {fileID: 1517540851}
   - {fileID: 572770504}
-  - {fileID: 7633883515719581499}
+  - {fileID: 1257828101}
+  - {fileID: 669803679}
