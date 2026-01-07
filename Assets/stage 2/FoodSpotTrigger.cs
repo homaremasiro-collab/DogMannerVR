@@ -2,35 +2,28 @@ using UnityEngine;
 
 public class FoodSpotTrigger : MonoBehaviour
 {
-    [Header("Refs")]
-    public Animator dogAnimator;      // 犬のAnimator
-    public GameObject hungryUI;       // 空腹UI（消したい）
-    public string eatTriggerName = "Eat";
+    [SerializeField] private DogStage2Flow dogFlow;
 
-    [Header("Optional")]
-    public bool destroyFood = true;   // 食べ物を消すか
-
-    private bool alreadyFed = false;
+    private void Awake()
+    {
+        if (!dogFlow) dogFlow = FindObjectOfType<DogStage2Flow>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (alreadyFed) return;
+        // FoodDataが付いてる物だけ反応（親に付けてる場合もあるのでInParent）
+        var data = other.GetComponentInParent<FoodData>();
+        if (data == null) return;
 
-        // 食べ物タグの物だけ反応
-        if (!other.CompareTag("Food")) return;
+        if (!dogFlow)
+        {
+            Debug.LogError("[FoodSpotTrigger] DogStage2Flow が見つかりません");
+            return;
+        }
 
-        alreadyFed = true;
+        // ★ここが重要：type と isSafe を渡す
+        dogFlow.OnFoodPlaced(data.type, data.isSafe);
 
-        // 犬が食べる
-        if (dogAnimator != null)
-            dogAnimator.SetTrigger(eatTriggerName);
-
-        // UIを消す
-        if (hungryUI != null)
-            hungryUI.SetActive(false);
-
-        // 食べ物は消す（好みで）
-        if (destroyFood)
-            Destroy(other.gameObject);
+        Debug.Log($"[FoodSpotTrigger] Food detected: {data.type}, safe={data.isSafe}");
     }
 }

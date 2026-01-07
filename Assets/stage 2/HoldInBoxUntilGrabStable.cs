@@ -1,110 +1,104 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-[DefaultExecutionOrder(-50)]
+[DisallowMultipleComponent]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(XRGrabInteractable))]
 public class HoldInBoxUntilGrabStable : MonoBehaviour
 {
     [Header("Lock Target")]
-    [SerializeField] private Transform lockPoint;
-    [SerializeField] private bool lockRotation = true;
+    public Transform lockPoint;
 
-    [Header("Behavior")]
-    [SerializeField] private bool releaseOnFirstGrab = true;
+    [Header("Options")]
+    public bool lockRotation = true;
 
-    private XRGrabInteractable grab;
-    private Rigidbody rb;
+    [Tooltip("Hoverした時点で固定解除（おすすめ）")]
+    public bool releaseOnHover = true;
 
-    private bool isLocked = true;
-    private bool hasEverGrabbed = false;
+    [Tooltip("Select（掴み）でも固定解除（保険）")]
+    public bool releaseOnGrab = true;
 
-    private bool savedUseGravity;
-    private bool savedIsKinematic;
+    Rigidbody rb;
+    XRGrabInteractable grab;
 
-    void Reset()
-    {
-        grab = GetComponent<XRGrabInteractable>();
-        rb = GetComponent<Rigidbody>();
-    }
+    bool locked = true;
 
     void Awake()
     {
-        // ★参照を必ず自動取得（ここが肝）
-        if (!grab) grab = GetComponent<XRGrabInteractable>();
-        if (!rb) rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
+        grab = GetComponent<XRGrabInteractable>();
 
-        if (!grab || !rb)
-        {
-            Debug.LogError($"[HoldInBoxUntilGrabStable] Missing grab or rigidbody on {name}", this);
-            enabled = false;
-            return;
-        }
+        // ★重要：固定中でも Dynamic のままにする
+        rb.isKinematic = false;
+        rb.useGravity = false;
 
+        // イベント
+        grab.hoverEntered.AddListener(OnHoverEntered);
         grab.selectEntered.AddListener(OnSelectEntered);
-        grab.selectExited.AddListener(OnSelectExited);
-
-        // 物理設定を保存
-        savedUseGravity = rb.useGravity;
-        savedIsKinematic = rb.isKinematic;
-
-        Lock();
     }
 
     void OnDestroy()
     {
-        if (grab)
+        if (grab != null)
         {
+            grab.hoverEntered.RemoveListener(OnHoverEntered);
             grab.selectEntered.RemoveListener(OnSelectEntered);
-            grab.selectExited.RemoveListener(OnSelectExited);
         }
+    }
+
+    void OnEnable()
+    {
+        Lock();
     }
 
     void FixedUpdate()
     {
-        if (!isLocked || !lockPoint) return;
+        if (!locked) return;
+        if (lockPoint == null) return;
 
-        // ★固定（物理で暴れないように位置を維持）
-        rb.MovePosition(lockPoint.position);
-        if (lockRotation) rb.MoveRotation(lockPoint.rotation);
+        // 物理を止める
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        // MovePositionより「直書き」の方がXRIと喧嘩しにくい
+        rb.position = lockPoint.position;
+        if (lockRotation)
+            rb.rotation = lockPoint.rotation;
     }
 
-    private void Lock()
+    void OnHoverEntered(HoverEnterEventArgs _)
     {
-        isLocked = true;
+        if (locked && releaseOnHover)
+            Unlock();
+    }
 
-        // ★固定中は重力OFF & kinematic ON（落下/転がり防止）
+    void OnSelectEntered(SelectEnterEventArgs _)
+    {
+        if (locked && releaseOnGrab)
+            Unlock();
+    }
+
+    public void Lock()
+    {
+        locked = true;
+
         rb.useGravity = false;
-        rb.isKinematic = true;
+        rb.isKinematic = false; // ★ここ絶対 false
+        rb.constraints = RigidbodyConstraints.FreezeAll;
 
-        // 初期位置を即合わせ
-        if (lockPoint)
+        if (lockPoint != null)
         {
-            transform.position = lockPoint.position;
-            if (lockRotation) transform.rotation = lockPoint.rotation;
+            rb.position = lockPoint.position;
+            if (lockRotation) rb.rotation = lockPoint.rotation;
         }
     }
 
-    private void Unlock()
+    public void Unlock()
     {
-        isLocked = false;
+        locked = false;
 
-        // ★掴めるように物理を戻す（ただし掴み中はXR側が動かす）
-        rb.isKinematic = savedIsKinematic;
-        rb.useGravity = savedUseGravity;
-    }
-
-    private void OnSelectEntered(SelectEnterEventArgs args)
-    {
-        hasEverGrabbed = true;
-        Unlock();
-
-        // 1回掴んだら、このスクリプト自体を止める（以降は通常掴み）
-        if (releaseOnFirstGrab)
-            enabled = false;
-    }
-
-    private void OnSelectExited(SelectExitEventArgs args)
-    {
-        // 「掴むまで固定」用途なら、掴んだ後は固定しない
-        // （ここで再Lockしない）
+        rb.constraints = RigidbodyConstraints.None;
+        rb.useGravity = true;
+        rb.isKinematic = false;
     }
 }

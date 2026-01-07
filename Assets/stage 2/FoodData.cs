@@ -1,16 +1,14 @@
-public enum FoodResult
+using UnityEngine;
+
+public enum FoodType
 {
-    Good,
-    Bad,
-    Danger,
-    Conditional
+    Egg = 0,
+    Fish = 1,
+    Grape = 2,
 }
 
-[System.Serializable]
-public class FoodData
+public class FoodData : MonoBehaviour
 {
-    public string foodName;
-    public FoodResult result;
-    public int affectionChange;
-    public string description;
+    public FoodType type;
+    public bool isSafe; // 犬にOKならtrue、ダメならfalse
 }
