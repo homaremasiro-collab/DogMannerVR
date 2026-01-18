@@ -9,6 +9,9 @@ public class DogStage2Flow : MonoBehaviour
     [Tooltip("歩かせる系スクリプトを入れる（空腹/食事中は止める）")]
     [SerializeField] private MonoBehaviour[] disableMoveScripts;
 
+    [Header("Food Spot (show only when hungry)")]
+    [SerializeField] private GameObject foodSpotRoot;
+
     [Header("Animator Trigger Names")]
     [SerializeField] private string hungryTrigger = "Hungry";
     [SerializeField] private string startEatTrigger = "StartEat";
@@ -30,7 +33,6 @@ public class DogStage2Flow : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool verboseLog = true;
 
-    // 外から DogMoveStraight が参照する
     public bool CanMove { get; private set; } = true;
 
     private bool isHungry = false;
@@ -39,14 +41,16 @@ public class DogStage2Flow : MonoBehaviour
     private void Awake()
     {
         if (!animator) animator = GetComponentInChildren<Animator>();
+        SetFoodSpotVisible(false);
     }
 
-    // DogHungerAfterWalk / DogWalkThenHungry などから呼ぶ想定
     public void OnDogBecameHungry()
     {
         if (isHungry || isEating) return;
 
         isHungry = true;
+        SetFoodSpotVisible(true);
+
         CanMove = false;
         SetMoveScriptsEnabled(false);
 
@@ -58,10 +62,9 @@ public class DogStage2Flow : MonoBehaviour
             animator.SetTrigger(hungryTrigger);
         }
 
-        if (verboseLog) Debug.Log("[DogStage2Flow] Dog became hungry -> Trigger Hungry");
+        if (verboseLog) Debug.Log("[DogStage2Flow] Dog became hungry -> Trigger Hungry (FoodSpot ON)");
     }
 
-    // FoodSpotTrigger から呼ぶ
     public void OnFoodPlaced(FoodType type, bool isSafe)
     {
         if (!isHungry || isEating)
@@ -71,6 +74,7 @@ public class DogStage2Flow : MonoBehaviour
         }
 
         if (verboseLog) Debug.Log($"[DogStage2Flow] Food placed: {type}, safe={isSafe}");
+        SetFoodSpotVisible(false);
 
         StartCoroutine(EatAndReact(isSafe));
     }
@@ -79,27 +83,26 @@ public class DogStage2Flow : MonoBehaviour
     {
         isEating = true;
 
-        // 食べ始め
         if (animator) animator.SetTrigger(startEatTrigger);
         if (verboseLog) Debug.Log("[DogStage2Flow] Trigger StartEat");
 
-        // 食べてる間は止める
         CanMove = false;
         SetMoveScriptsEnabled(false);
 
         yield return new WaitForSeconds(eatSeconds);
 
-        // 反応
+        // ★ Stage2：ここが確定点（Safe=Good / Unsafe=Bad）
+        if (isSafe) ResultStore.Instance?.AddGood();
+        else ResultStore.Instance?.AddBad();
+
         if (animator)
         {
             animator.SetTrigger(isSafe ? reactGoodTrigger : reactBadTrigger);
         }
         if (verboseLog) Debug.Log($"[DogStage2Flow] Trigger React {(isSafe ? "Good" : "Bad")}");
 
-        // ちょい待ってから歩き再開（反応が見えるように）
         yield return new WaitForSeconds(0.3f);
 
-        // 次へ進むため歩き再開
         isHungry = false;
         isEating = false;
 
@@ -117,5 +120,12 @@ public class DogStage2Flow : MonoBehaviour
             if (!m) continue;
             m.enabled = enabled;
         }
+    }
+
+    private void SetFoodSpotVisible(bool visible)
+    {
+        if (!foodSpotRoot) return;
+        if (foodSpotRoot.activeSelf != visible)
+            foodSpotRoot.SetActive(visible);
     }
 }
