@@ -200,12 +200,7 @@ public class DogAccidentReaction : MonoBehaviour
         _leadingHand = null;
 
         // ★ Stage3：ここが確定点（◎=Good / △=Normal / ×=Bad）
-        switch (_result)
-        {
-            case ResultAction.LeaveGood: ResultStore.Instance?.AddGood(); break;
-            case ResultAction.SootheBad: ResultStore.Instance?.AddNormal(); break;
-            case ResultAction.WaitWorst: ResultStore.Instance?.AddBad(); break;
-        }
+      
 
         if (debugLog) Debug.Log($"[DogAccidentReaction] Decide: {_result}");
     }

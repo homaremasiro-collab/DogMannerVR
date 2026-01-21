@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a65d2e7b7bb994498d1139ed56f44dc, type: 3}
+  m_Name: FlowConfig_Main
+  m_EditorClassIdentifier: 
+  bootstrapScene: {fileID: 102900000, guid: 790f0bea8a887354aa14b757389d60f9, type: 3}
+  firstStageScene: {fileID: 102900000, guid: f96847088e4fc1242bee069c290afc0d, type: 3}
+  stages:
+  - stageId: 1
+    scene: {fileID: 102900000, guid: 702202204e7e081479d6571179ca8c42, type: 3}
+    sceneNameFallback: "\u30B9\u30C6\u30FC\u30B81"
+  - stageId: 2
+    scene: {fileID: 102900000, guid: b0938617a92294e4089df4f5a276d93d, type: 3}
+    sceneNameFallback: "\u30B9\u30C6\u30FC\u30B82"
+  - stageId: 3
+    scene: {fileID: 102900000, guid: 0843080bc214695438ec3a3c22e8a7b9, type: 3}
+    sceneNameFallback: "\u30B9\u30C6\u30FC\u30B83"
+  - stageId: 4
+    scene: {fileID: 102900000, guid: 27aa90ce51499ae4b9254eb3e2a56e4c, type: 3}
+    sceneNameFallback: "\u30B9\u30C6\u30FC\u30B84"
+  stage5Good: {fileID: 102900000, guid: 51c5cd0ad637f4dac9705a065a4ea2b8, type: 3}
+  stage5Normal: {fileID: 102900000, guid: 82e160bc3bc9f40beafd8fb347e819cc, type: 3}
+  stage5Bad: {fileID: 102900000, guid: e74da006fc15646d7b98cbe08a575761, type: 3}
+  tieBreakPriority: 000000000100000002000000

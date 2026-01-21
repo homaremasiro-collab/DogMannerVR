@@ -2,28 +2,22 @@ using UnityEngine;
 
 public class FoodSpotTrigger : MonoBehaviour
 {
-    [SerializeField] private DogStage2Flow dogFlow;
+    [SerializeField] private DogStage2Flow stageFlow;
+    [SerializeField] private bool destroyFoodOnPlace = true;
 
     private void Awake()
     {
-        if (!dogFlow) dogFlow = FindObjectOfType<DogStage2Flow>();
+        if (!stageFlow) stageFlow = FindObjectOfType<DogStage2Flow>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // FoodDataが付いてる物だけ反応（親に付けてる場合もあるのでInParent）
-        var data = other.GetComponentInParent<FoodData>();
-        if (data == null) return;
+        var food = other.GetComponentInParent<FoodData>();
+        if (food == null) return;
 
-        if (!dogFlow)
-        {
-            Debug.LogError("[FoodSpotTrigger] DogStage2Flow が見つかりません");
-            return;
-        }
+        stageFlow?.OnFoodPlaced(food.type, food.isSafe);
 
-        // ★ここが重要：type と isSafe を渡す
-        dogFlow.OnFoodPlaced(data.type, data.isSafe);
-
-        Debug.Log($"[FoodSpotTrigger] Food detected: {data.type}, safe={data.isSafe}");
+        if (destroyFoodOnPlace)
+            Destroy(food.gameObject);
     }
 }

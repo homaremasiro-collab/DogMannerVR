@@ -282,8 +282,7 @@ if (_goodAchieved)
     _decision = Decision.Good;
 
     // ★ Stage4：Good 確定（ステージ5用に加算）
-    ResultStore.Instance?.AddGood();
-
+    
     if (debugLog) Debug.Log("[Decision] Window end -> Good");
     StartCoroutine(ReactTurnRelease(trigHappy));
 }
@@ -292,7 +291,7 @@ else if (_called)
     _decision = Decision.Normal;
 
     // ★ Stage4：Normal 確定（ステージ5用に加算）
-    ResultStore.Instance?.AddNormal();
+  
 
     if (debugLog) Debug.Log("[Decision] Window end -> Normal");
     StartCoroutine(ReactTurnRelease(trigCalm));
@@ -302,8 +301,7 @@ else
     _decision = Decision.Bad;
 
     // ★ Stage4：Bad 確定（ステージ5用に加算）
-    ResultStore.Instance?.AddBad();
-
+   
     if (debugLog) Debug.Log("[Decision] Window end -> Bad");
     StartCoroutine(ReactTurnRelease(trigAngry));
 }

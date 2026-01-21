@@ -8,8 +8,22 @@ public class DogTrigger : MonoBehaviour
     public DogTouchJudge manager;
     public bool debugLog = true;
 
+    [SerializeField] private float ignoreSecondsFromStart = 0.3f;
+    private float _startTime;
+
+    void Awake()
+    {
+        _startTime = Time.time;
+    }
+
+    bool CanAccept()
+    {
+        return Time.time - _startTime >= ignoreSecondsFromStart;
+    }
+
     void OnTriggerEnter(Collider other)
     {
+        if (!CanAccept()) return;
         if (!other.CompareTag("Hand")) return;
         if (manager == null) return;
 
@@ -21,6 +35,7 @@ public class DogTrigger : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
+        if (!CanAccept()) return;
         if (!other.CompareTag("Hand")) return;
         if (manager == null) return;
 
@@ -29,6 +44,7 @@ public class DogTrigger : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
+        if (!CanAccept()) return;
         if (!other.CompareTag("Hand")) return;
         if (manager == null) return;
 

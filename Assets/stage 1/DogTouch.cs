@@ -1,31 +1,41 @@
+using System.Collections;
 using UnityEngine;
 
 public class DogTouchJudge : MonoBehaviour
 {
-    [Header("Auto Assign (空でOK)")]
-    [Tooltip("空なら、このオブジェクト or 子から Animator を自動で拾います")]
-    public Animator dogAnimator;
-
-    [Tooltip("空なら MainCamera を自動で探して入れます")]
-    public Transform hmd;
+    [Header("Refs")]
+    [SerializeField] private Animator dogAnimator;
+    [SerializeField] private Transform hmd;
+    [SerializeField] private DogTurnController turnController;
+    [SerializeField] private Transform nextDirectionTarget;
+    [SerializeField] private NextStageGate nextStageGate;
 
     [Header("Animator Trigger Names")]
-    public string trigBody = "TouchBody";
-    public string trigHead = "TouchHead";
-    public string trigSniffOk = "SniffOK";
+    [SerializeField] private string trigBody = "TouchBody";
+    [SerializeField] private string trigHead = "TouchHead";
+    [SerializeField] private string trigSniffOk = "SniffOK";
+
+    [Header("Animator State Names (Copy Path推奨)")]
+    [Tooltip("例: アーマチュア|turn")]
+    [SerializeField] private string turnStateName = "アーマチュア|turn";
+    [Tooltip("例: アーマチュア|walk_back")]
+    [SerializeField] private string walkBackStateName = "アーマチュア|walk_back";
 
     [Header("Sniff settings")]
-    public float crouchHeight = 1.2f;
-    public float sniffHoldSeconds = 0.6f;
+    [SerializeField] private float crouchHeight = 1.2f;
+    [SerializeField] private float sniffHoldSeconds = 1.0f;
+
+    [Header("Reaction guarantee")]
+    [SerializeField] private float reactionHoldSeconds = 2.0f;
 
     [Header("Debug")]
-    public bool debugLog = true;
+    [SerializeField] private bool debugLog = true;
 
-    bool decided = false;
-    bool sniffInProgress = false;
-    float sniffTimer = 0f;
+    private bool decided = false;
+    private bool processing = false;
+    private float sniffTimer = 0f;
 
-    void Awake()
+    private void Awake()
     {
         if (dogAnimator == null)
         {
@@ -33,90 +43,91 @@ public class DogTouchJudge : MonoBehaviour
             if (dogAnimator == null) dogAnimator = GetComponent<Animator>();
         }
 
-        if (hmd == null)
-        {
-            var cam = Camera.main;
-            if (cam != null) hmd = cam.transform;
-        }
-
-        if (debugLog)
-            Debug.Log($"[DogTouchJudge] Animator={(dogAnimator ? dogAnimator.name : "NULL")}, HMD={(hmd ? hmd.name : "NULL")}");
+        if (hmd == null && Camera.main != null)
+            hmd = Camera.main.transform;
     }
+
+    // --- DogTrigger.cs が呼ぶメソッド名に合わせる ---
 
     public void OnBodyTouched()
     {
         if (decided) return;
-        if (sniffInProgress) return;
-
-        decided = true;
-
-        // ★ Stage1：Bad 確定
-        ResultStore.Instance?.AddBad();
-
-        if (dogAnimator != null) dogAnimator.SetTrigger(trigBody);
-        if (debugLog) Debug.Log("判定：✖ いきなり触る（体）");
+        StartCoroutine(ReactionSequence(trigBody));
     }
 
     public void OnHeadTouched()
     {
         if (decided) return;
-        if (sniffInProgress) return;
-
-        decided = true;
-
-        // ★ Stage1：Normal 確定（△扱い）
-        ResultStore.Instance?.AddNormal();
-
-        if (dogAnimator != null) dogAnimator.SetTrigger(trigHead);
-        if (debugLog) Debug.Log("判定：△ 頭を触った（怖がる可能性）");
+        StartCoroutine(ReactionSequence(trigHead));
     }
 
     public void OnSniffStay()
     {
         if (decided) return;
+        if (hmd == null) return;
 
-        if (hmd == null)
-        {
-            var cam = Camera.main;
-            if (cam != null) hmd = cam.transform;
-            if (hmd == null) return;
-        }
-
+        // しゃがみ判定（HMDの高さ）
         bool crouching = hmd.position.y < crouchHeight;
         if (!crouching)
         {
-            sniffInProgress = false;
             sniffTimer = 0f;
             return;
         }
 
-        sniffInProgress = true;
         sniffTimer += Time.deltaTime;
-
         if (sniffTimer >= sniffHoldSeconds)
         {
-            decided = true;
-
-            // ★ Stage1：Good 確定
-            ResultStore.Instance?.AddGood();
-
-            if (dogAnimator != null) dogAnimator.SetTrigger(trigSniffOk);
-            if (debugLog) Debug.Log("判定：○ しゃがんで手を差し出した（鼻でスニッフ）");
+            sniffTimer = 0f;
+            StartCoroutine(ReactionSequence(trigSniffOk));
         }
     }
 
     public void OnSniffExit()
     {
-        sniffInProgress = false;
         sniffTimer = 0f;
-        if (debugLog) Debug.Log("Sniff中断");
     }
 
-    public void ResetJudge()
+    private IEnumerator ReactionSequence(string triggerName)
     {
-        decided = false;
-        sniffInProgress = false;
-        sniffTimer = 0f;
-        if (debugLog) Debug.Log("Judge Reset");
+        if (processing) yield break;
+        processing = true;
+        decided = true;
+
+        if (debugLog)
+            Debug.Log($"[DogTouchJudge] Trigger: {triggerName}");
+
+        // ① リアクション発火
+        if (dogAnimator != null)
+        {
+            dogAnimator.ResetTrigger(trigBody);
+            dogAnimator.ResetTrigger(trigHead);
+            dogAnimator.ResetTrigger(trigSniffOk);
+            dogAnimator.SetTrigger(triggerName);
+        }
+
+        // ② リアクションを必ず再生
+        yield return new WaitForSeconds(reactionHoldSeconds);
+
+        // ③ ターン（物理回転）
+        if (turnController != null && nextDirectionTarget != null)
+        {
+            turnController.StartTurn(nextDirectionTarget.position);
+            while (turnController.IsTurning) yield return null;
+        }
+        else
+        {
+            // turnController無しでも見た目だけturn stateへ
+            if (dogAnimator != null && !string.IsNullOrEmpty(turnStateName))
+                dogAnimator.CrossFade(turnStateName, 0.05f);
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        // ④ walk_back
+        if (dogAnimator != null && !string.IsNullOrEmpty(walkBackStateName))
+            dogAnimator.CrossFade(walkBackStateName, 0.05f);
+
+        // ⑤ ゲート解放
+        if (nextStageGate != null)
+            nextStageGate.EnableGate();
     }
 }
